@@ -33,7 +33,7 @@
     { "id": "temp-dir", "type": "dir", "patterns": ["temp", "tmp", "logs", "debug"], "severity": "LOW", "description": "Temporary / log directory" },
     { "id": "ide-dir", "type": "dir", "patterns": [".idea", ".vscode"], "severity": "LOW", "description": "IDE configuration directory" },
 
-    { "id": "secret-ssh-private-key", "type": "content", "patterns": ["-----BEGIN (RSA |OPENSSH |EC |DSA |PGP )?PRIVATE KEY-----"], "severity": "CRITICAL", "description": "Embedded private key" },
+    { "id": "secret-ssh-private-key", "type": "content", "patterns": ["-----BEGIN (RSA |OPENSSH |EC |DSA |PGP )?PRIVATE KEY-----[\\s\\\\]{0,20}[A-Za-z0-9+/]{40,}"], "severity": "CRITICAL", "description": "Embedded private key" },
     { "id": "secret-aws-key", "type": "content", "patterns": ["AKIA[0-9A-Z]{16}", "aws_secret_access_key\\s*[:=]\\s*['\"]?[A-Za-z0-9/+]{40}"], "severity": "CRITICAL", "description": "AWS access key" },
     { "id": "secret-google-api", "type": "content", "patterns": ["AIza[0-9A-Za-z_\\-]{35}"], "severity": "CRITICAL", "description": "Google API key" },
     { "id": "secret-openai", "type": "content", "patterns": ["sk-[A-Za-z0-9]{20,}"], "severity": "CRITICAL", "description": "OpenAI-style API key" },

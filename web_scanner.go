@@ -277,11 +277,19 @@ func scanWebPath(client *http.Client, j webJob, cfg WebConfig, ua string, extCac
 	case sigMatched:
 		confirmed, evidence = true, sig
 	case len(j.path.Signatures) == 0:
-		if !extensionServesJunk(client, j.url, trailingExt(j.path.Path), cfg.MaxBodySize, ua, extCache) {
-			confirmed, evidence = true, fmt.Sprintf("200, %d bytes", len(body))
-		}
+		confirmed, evidence = true, fmt.Sprintf("200, %d bytes", len(body))
 	}
 	if !confirmed {
+		return
+	}
+
+	// A raw secret match (regex against real key/token formats) is confirmed
+	// on its own; everything else is confirmed by "this path returns 200 and
+	// looks right", which a site that serves the same catch-all/login page
+	// for any known filename extension can fake. Re-probe a made-up file
+	// with the same extension: if the site 200s that too, this path's 200
+	// proves nothing and the finding is suppressed.
+	if secret == "" && extensionServesJunk(client, j.url, trailingExt(j.path.Path), cfg.MaxBodySize, ua, extCache) {
 		return
 	}
 
