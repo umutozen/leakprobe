@@ -114,6 +114,7 @@ func ScanWeb(cfg WebConfig) []Finding {
 	for _, t := range cfg.Targets {
 		baselines[t] = measureBaseline(client, t, cfg, ua)
 	}
+	extCache := &extProbeCache{results: map[string]bool{}}
 
 	jobs := make(chan webJob, 256)
 	results := make(chan Finding, 256)
@@ -133,7 +134,7 @@ func ScanWeb(cfg WebConfig) []Finding {
 		go func() {
 			defer workers.Done()
 			for j := range jobs {
-				scanWebPath(client, j, cfg, ua, results)
+				scanWebPath(client, j, cfg, ua, extCache, results)
 				if cfg.Delay > 0 {
 					time.Sleep(cfg.Delay)
 				}
@@ -201,7 +202,59 @@ func measureBaseline(client *http.Client, target string, cfg WebConfig, ua strin
 	return baselineInfo{status: s1, length: len(b1), catchAll: catchAll, variable: variable}
 }
 
-func scanWebPath(client *http.Client, j webJob, cfg WebConfig, ua string, results chan<- Finding) {
+// extProbeCache remembers, per target+extension, whether a made-up file with
+// that extension also comes back as 200. It's shared across the worker pool
+// (guarded by a mutex) so the same extension is only probed once per target
+// even though many paths can share it.
+type extProbeCache struct {
+	mu      sync.Mutex
+	results map[string]bool
+}
+
+// trailingExt returns the extension of a URL path's last segment, e.g.
+// "/db.sql.gz" -> ".gz". Empty if the segment has no dot.
+func trailingExt(urlPath string) string {
+	base := urlPath
+	if i := strings.LastIndex(base, "/"); i >= 0 {
+		base = base[i+1:]
+	}
+	if i := strings.LastIndex(base, "."); i >= 0 {
+		return base[i:]
+	}
+	return ""
+}
+
+// extensionServesJunk checks whether the target serves a made-up file with
+// the given extension as 200. Some servers 404 correctly for plain random
+// paths but still return a soft-404 page (status 200) for anything that
+// LOOKS like a static asset of a given type, a pattern the two generic
+// baseline probes in measureBaseline don't catch. This only matters for
+// rules with no content signature, since those rely entirely on the status
+// code to confirm a finding. The result is cached per target+extension so
+// repeated paths sharing an extension only cost one extra request.
+func extensionServesJunk(client *http.Client, target, ext string, maxBody int64, ua string, cache *extProbeCache) bool {
+	if ext == "" {
+		return false
+	}
+	key := target + ext
+	cache.mu.Lock()
+	if v, ok := cache.results[key]; ok {
+		cache.mu.Unlock()
+		return v
+	}
+	cache.mu.Unlock()
+
+	probeURL := strings.TrimRight(target, "/") + "/leakprobe-junk-8f2a1c" + ext
+	status, _ := httpGet(client, probeURL, maxBody, ua)
+	result := status == 200
+
+	cache.mu.Lock()
+	cache.results[key] = result
+	cache.mu.Unlock()
+	return result
+}
+
+func scanWebPath(client *http.Client, j webJob, cfg WebConfig, ua string, extCache *extProbeCache, results chan<- Finding) {
 	fullURL := strings.TrimRight(j.url, "/") + j.path.Path
 	status, body := httpGet(client, fullURL, cfg.MaxBodySize, ua)
 	if status != 200 || len(body) == 0 {
@@ -224,7 +277,9 @@ func scanWebPath(client *http.Client, j webJob, cfg WebConfig, ua string, result
 	case sigMatched:
 		confirmed, evidence = true, sig
 	case len(j.path.Signatures) == 0:
-		confirmed, evidence = true, fmt.Sprintf("200, %d bytes", len(body))
+		if !extensionServesJunk(client, j.url, trailingExt(j.path.Path), cfg.MaxBodySize, ua, extCache) {
+			confirmed, evidence = true, fmt.Sprintf("200, %d bytes", len(body))
+		}
 	}
 	if !confirmed {
 		return
