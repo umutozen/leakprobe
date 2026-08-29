@@ -65,6 +65,11 @@ leakprobe -url-list targets.txt
 **Discover subdomains and scan every live host.** Requires [subfinder](https://github.com/projectdiscovery/subfinder) and [httpx](https://github.com/projectdiscovery/httpx) on `$PATH`:
 
 ```bash
+go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+go install github.com/projectdiscovery/httpx/cmd/httpx@latest
+```
+
+```bash
 leakprobe -domain example.com
 ```
 
