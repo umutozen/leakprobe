@@ -1,0 +1,132 @@
+{
+  "paths": [
+    { "path": "/.env", "severity": "CRITICAL", "signatures": ["APP_KEY", "DB_PASSWORD", "SECRET", "DB_HOST", "APP_ENV"] },
+    { "path": "/.env.local", "severity": "CRITICAL", "signatures": ["APP_KEY", "DB_PASSWORD", "SECRET"] },
+    { "path": "/.env.production", "severity": "CRITICAL", "signatures": ["APP_KEY", "DB_PASSWORD", "SECRET"] },
+    { "path": "/.env.bak", "severity": "CRITICAL", "signatures": ["DB_PASSWORD", "SECRET", "APP_KEY"] },
+    { "path": "/.env.save", "severity": "CRITICAL", "signatures": ["DB_PASSWORD", "SECRET", "APP_KEY"] },
+
+    { "path": "/.git/config", "severity": "HIGH", "signatures": ["[core]", "repositoryformatversion", "[remote"] },
+    { "path": "/.git/HEAD", "severity": "HIGH", "signatures": ["ref:"] },
+    { "path": "/.git/index", "severity": "HIGH", "signatures": ["DIRC"] },
+    { "path": "/.svn/wc.db", "severity": "HIGH", "signatures": ["SQLite format"] },
+    { "path": "/.svn/entries", "severity": "MEDIUM", "signatures": ["dir", "svn"] },
+    { "path": "/.hg/store/00manifest.i", "severity": "MEDIUM", "signatures": [] },
+
+    { "path": "/config.php.bak", "severity": "HIGH", "signatures": ["<?php", "password", "define", "$db"] },
+    { "path": "/config.php~", "severity": "HIGH", "signatures": ["<?php", "password", "$db"] },
+    { "path": "/config.php.save", "severity": "HIGH", "signatures": ["<?php", "password", "$db"] },
+    { "path": "/config.php.old", "severity": "HIGH", "signatures": ["<?php", "password", "$db"] },
+    { "path": "/wp-config.php.bak", "severity": "CRITICAL", "signatures": ["DB_PASSWORD", "DB_USER", "AUTH_KEY", "<?php"] },
+    { "path": "/wp-config.php~", "severity": "CRITICAL", "signatures": ["DB_PASSWORD", "DB_USER", "AUTH_KEY"] },
+
+    { "path": "/web.config", "severity": "HIGH", "signatures": ["<configuration", "connectionString", "appSettings"] },
+    { "path": "/appsettings.json", "severity": "HIGH", "signatures": ["ConnectionStrings", "Password", "\"Jwt\""] },
+
+    { "path": "/backup.sql", "severity": "CRITICAL", "signatures": ["INSERT INTO", "CREATE TABLE", "-- MySQL", "DROP TABLE"] },
+    { "path": "/database.sql", "severity": "CRITICAL", "signatures": ["INSERT INTO", "CREATE TABLE", "DROP TABLE"] },
+    { "path": "/dump.sql", "severity": "CRITICAL", "signatures": ["INSERT INTO", "CREATE TABLE", "DROP TABLE"] },
+    { "path": "/db.sql.gz", "severity": "CRITICAL", "signatures": [] },
+    { "path": "/backup.zip", "severity": "HIGH", "signatures": ["PK"] },
+    { "path": "/backup.tar.gz", "severity": "HIGH", "signatures": [] },
+    { "path": "/www.zip", "severity": "HIGH", "signatures": ["PK"] },
+
+    { "path": "/phpinfo.php", "severity": "HIGH", "signatures": ["phpinfo()", "PHP Version", "php.ini"] },
+    { "path": "/info.php", "severity": "HIGH", "signatures": ["phpinfo()", "PHP Version"] },
+
+    { "path": "/.htaccess", "severity": "MEDIUM", "signatures": ["RewriteEngine", "RewriteRule", "RewriteCond", "<FilesMatch"] },
+    { "path": "/.htpasswd", "severity": "CRITICAL", "signatures": [":$", ":$apr1$", ":{SHA}"] },
+
+    { "path": "/.aws/credentials", "severity": "CRITICAL", "signatures": ["aws_access_key_id", "aws_secret_access_key"] },
+    { "path": "/.ssh/id_rsa", "severity": "CRITICAL", "signatures": ["-----BEGIN", "PRIVATE KEY"] },
+    { "path": "/id_rsa", "severity": "CRITICAL", "signatures": ["-----BEGIN", "PRIVATE KEY"] },
+
+    { "path": "/docker-compose.yml", "severity": "MEDIUM", "signatures": ["services:", "container_name:", "depends_on:"] },
+    { "path": "/.gitlab-ci.yml", "severity": "MEDIUM", "signatures": ["stages:", "before_script:", "artifacts:"] },
+
+    { "path": "/server-status", "severity": "MEDIUM", "signatures": ["Apache Server Status", "Server uptime:", "Total accesses:"] },
+    { "path": "/.DS_Store", "severity": "LOW", "signatures": ["Bud1"] },
+
+    { "path": "/composer.json", "severity": "LOW", "signatures": ["\"require\":", "\"autoload\":", "\"minimum-stability\":"] },
+    { "path": "/package.json", "severity": "LOW", "signatures": ["\"dependencies\":", "\"devDependencies\":", "\"scripts\":"] },
+
+    { "path": "/error.log", "severity": "MEDIUM", "signatures": ["[error]", "PHP Fatal", "PHP Warning", "Stack trace:"] },
+    { "path": "/debug.log", "severity": "MEDIUM", "signatures": ["PHP Notice", "PHP Warning", "WordPress database error", "PHP Deprecated"] },
+
+    { "path": "/robots.txt", "severity": "INFO", "signatures": ["Disallow", "User-agent"] },
+    { "path": "/.well-known/security.txt", "severity": "INFO", "signatures": ["Contact:", "Policy:"] },
+
+    { "path": "/.env.dev", "severity": "CRITICAL", "signatures": ["APP_KEY", "DB_PASSWORD", "SECRET"] },
+    { "path": "/.env.staging", "severity": "CRITICAL", "signatures": ["APP_KEY", "DB_PASSWORD", "SECRET"] },
+    { "path": "/.env.test", "severity": "MEDIUM", "signatures": ["APP_KEY", "DB_PASSWORD", "SECRET"] },
+
+    { "path": "/config/database.yml", "severity": "CRITICAL", "signatures": ["adapter:", "password:", "username:"] },
+    { "path": "/config/secrets.yml", "severity": "CRITICAL", "signatures": ["secret_key_base:"] },
+    { "path": "/config/master.key", "severity": "CRITICAL", "signatures": [] },
+    { "path": "/local_settings.py", "severity": "CRITICAL", "signatures": ["SECRET_KEY", "DATABASES", "PASSWORD"] },
+    { "path": "/settings.py", "severity": "MEDIUM", "signatures": ["SECRET_KEY", "DEBUG", "DATABASES"] },
+    { "path": "/application.yml", "severity": "HIGH", "signatures": ["spring:", "datasource:", "password:"] },
+    { "path": "/application.properties", "severity": "HIGH", "signatures": ["spring.datasource", "password="] },
+    { "path": "/appsettings.Development.json", "severity": "HIGH", "signatures": ["ConnectionStrings", "Password"] },
+
+    { "path": "/actuator/env", "severity": "CRITICAL", "signatures": ["propertySources", "activeProfiles"] },
+    { "path": "/actuator/heapdump", "severity": "CRITICAL", "signatures": [] },
+    { "path": "/actuator/configprops", "severity": "HIGH", "signatures": ["contexts", "beans"] },
+
+    { "path": "/storage/logs/laravel.log", "severity": "MEDIUM", "signatures": ["local.ERROR", "Stack trace", "production.ERROR"] },
+    { "path": "/telescope/requests", "severity": "HIGH", "signatures": ["telescope"] },
+
+    { "path": "/terraform.tfstate", "severity": "CRITICAL", "signatures": ["\"resources\":", "\"terraform_version\""] },
+    { "path": "/terraform.tfstate.backup", "severity": "CRITICAL", "signatures": ["\"resources\":", "\"terraform_version\""] },
+    { "path": "/.terraform/terraform.tfstate", "severity": "CRITICAL", "signatures": ["\"resources\":"] },
+
+    { "path": "/vault.yml", "severity": "HIGH", "signatures": ["$ANSIBLE_VAULT"] },
+    { "path": "/group_vars/all/vault.yml", "severity": "HIGH", "signatures": ["$ANSIBLE_VAULT"] },
+
+    { "path": "/kubeconfig", "severity": "CRITICAL", "signatures": ["apiVersion:", "clusters:", "client-certificate"] },
+    { "path": "/.kube/config", "severity": "CRITICAL", "signatures": ["apiVersion:", "clusters:", "client-certificate"] },
+
+    { "path": "/.npmrc", "severity": "HIGH", "signatures": ["_authToken", "//registry"] },
+    { "path": "/.pypirc", "severity": "HIGH", "signatures": ["[pypi]", "password"] },
+    { "path": "/.netrc", "severity": "CRITICAL", "signatures": ["machine", "login", "password"] },
+
+    { "path": "/index.php.swp", "severity": "MEDIUM", "signatures": [] },
+    { "path": "/.index.php.swp", "severity": "MEDIUM", "signatures": [] },
+
+    { "path": "/installer.php", "severity": "HIGH", "signatures": ["Duplicator", "installer"] },
+    { "path": "/installer-backup.php", "severity": "HIGH", "signatures": [] },
+
+    { "path": "/sites/default/settings.php", "severity": "CRITICAL", "signatures": ["$databases", "drupal_hash_salt"] },
+    { "path": "/sites/default/settings.php.bak", "severity": "CRITICAL", "signatures": ["$databases", "drupal_hash_salt"] },
+
+    { "path": "/database.sqlite", "severity": "HIGH", "signatures": ["SQLite format"] },
+    { "path": "/db.sqlite3", "severity": "HIGH", "signatures": ["SQLite format"] },
+
+    { "path": "/elmah.axd", "severity": "HIGH", "signatures": ["Error Log", "ELMAH"] },
+    { "path": "/trace.axd", "severity": "MEDIUM", "signatures": ["Application Trace"] },
+    { "path": "/server-info", "severity": "MEDIUM", "signatures": ["Apache Server Information"] },
+    { "path": "/nginx_status", "severity": "MEDIUM", "signatures": ["Active connections"] },
+
+    { "path": "/adminer.php", "severity": "HIGH", "signatures": ["Adminer", "login form"] },
+    { "path": "/_cluster/health", "severity": "MEDIUM", "signatures": ["cluster_name", "\"status\":"] },
+
+    { "path": "/", "severity": "MEDIUM", "description": "Root directory listing is open", "signatures": ["Index of /", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/backup/", "severity": "HIGH", "description": "Directory listing is open (backup directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/backups/", "severity": "HIGH", "description": "Directory listing is open (backup directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/dump/", "severity": "HIGH", "description": "Directory listing is open (dump directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/db/", "severity": "HIGH", "description": "Directory listing is open (database directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/sql/", "severity": "HIGH", "description": "Directory listing is open (sql directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/.git/", "severity": "HIGH", "description": "Directory listing is open (.git directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/private/", "severity": "HIGH", "description": "Directory listing is open (private directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/config/", "severity": "HIGH", "description": "Directory listing is open (config directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/logs/", "severity": "MEDIUM", "description": "Directory listing is open (log directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/uploads/", "severity": "MEDIUM", "description": "Directory listing is open (uploads directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/files/", "severity": "MEDIUM", "description": "Directory listing is open", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/data/", "severity": "MEDIUM", "description": "Directory listing is open (data directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/includes/", "severity": "MEDIUM", "description": "Directory listing is open", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/tmp/", "severity": "MEDIUM", "description": "Directory listing is open (temp directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/vendor/", "severity": "MEDIUM", "description": "Directory listing is open (dependency directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/admin/", "severity": "MEDIUM", "description": "Directory listing is open (admin directory)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] },
+    { "path": "/wp-content/uploads/", "severity": "MEDIUM", "description": "Directory listing is open (WP uploads)", "signatures": ["Index of /", "Parent Directory", "[To Parent Directory]", "Directory listing for", "?C=N;O=D"] }
+  ]
+}

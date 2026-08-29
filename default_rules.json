@@ -1,0 +1,46 @@
+{
+  "rules": [
+    { "id": "env-file", "type": "name", "patterns": [".env", ".env.local", ".env.production", ".env.prod"], "severity": "CRITICAL", "description": "Environment variable file (contains secrets)" },
+    { "id": "env-template", "type": "name", "patterns": [".env.development", ".env.dev", ".env.example", ".env.sample"], "severity": "HIGH", "description": "Environment variable template" },
+    { "id": "ssh-private-key", "type": "name", "patterns": ["id_rsa", "id_ed25519", "id_dsa", "id_ecdsa"], "severity": "CRITICAL", "description": "SSH private key" },
+    { "id": "credentials-file", "type": "name", "patterns": ["credentials", "credentials.json", "service-account.json", "gcloud-service-key.json"], "severity": "CRITICAL", "description": "Service / cloud credentials file" },
+    { "id": "htpasswd", "type": "name", "patterns": [".htpasswd"], "severity": "CRITICAL", "description": "Password hash file" },
+    { "id": "database-dump", "type": "name", "patterns": ["dump.sql", "database.sql", "backup.sql", "db.sql"], "severity": "CRITICAL", "description": "Database dump" },
+    { "id": "php-config", "type": "name", "patterns": ["config.php", "configuration.php", "settings.php", "wp-config.php", "database.php"], "severity": "HIGH", "description": "Application configuration" },
+    { "id": "web-config", "type": "name", "patterns": ["web.config", "appsettings.json", "appsettings.production.json"], "severity": "HIGH", "description": "Application configuration" },
+    { "id": "phpinfo", "type": "name", "patterns": ["phpinfo.php", "info.php", "test.php"], "severity": "HIGH", "description": "Environment information disclosure" },
+    { "id": "docker-compose", "type": "name", "patterns": ["docker-compose.yml", "docker-compose.override.yml", ".dockercfg"], "severity": "MEDIUM", "description": "Container configuration" },
+    { "id": "ci-config", "type": "name", "patterns": [".gitlab-ci.yml", "jenkinsfile", ".travis.yml"], "severity": "MEDIUM", "description": "CI/CD configuration" },
+    { "id": "git-credentials", "type": "name", "patterns": [".git-credentials", ".netrc", ".pgpass"], "severity": "CRITICAL", "description": "Stored credentials" },
+    { "id": "package-file", "type": "name", "patterns": ["composer.json", "package.json", "yarn.lock", "composer.lock", "package-lock.json"], "severity": "LOW", "description": "Dependency information disclosure" },
+    { "id": "meta-file", "type": "name", "patterns": [".ds_store", "thumbs.db", "robots.txt", "sitemap.xml"], "severity": "INFO", "description": "Metadata / informational file" },
+
+    { "id": "private-key-ext", "type": "ext", "patterns": [".pem", ".key", ".pfx", ".p12", ".jks", ".keystore", ".asc"], "severity": "CRITICAL", "description": "Key / certificate file" },
+    { "id": "database-ext", "type": "ext", "patterns": [".sql", ".sqlite", ".sqlite3", ".db", ".mdb", ".dump"], "severity": "HIGH", "description": "Database file" },
+    { "id": "backup-ext", "type": "ext", "patterns": [".bak", ".backup", ".save", ".swp", ".swo"], "severity": "HIGH", "description": "Backup file" },
+    { "id": "old-ext", "type": "ext", "patterns": [".old", ".orig", ".copy", ".tmp", ".temp"], "severity": "MEDIUM", "description": "Old / temporary file" },
+    { "id": "archive-ext", "type": "ext", "patterns": [".zip", ".rar", ".7z", ".tar", ".tgz", ".gz"], "severity": "MEDIUM", "description": "Archive file (may be a backup)" },
+    { "id": "log-ext", "type": "ext", "patterns": [".log"], "severity": "MEDIUM", "description": "Log file" },
+
+    { "id": "env-backup-suffix", "type": "suffix", "patterns": [".env.bak", ".env.backup", ".env.old", ".env.save"], "severity": "CRITICAL", "description": "Exposed backup of an environment file" },
+    { "id": "code-backup-suffix", "type": "suffix", "patterns": [".php.bak", ".php.old", ".php.save", ".php~", ".asp.bak", ".aspx.bak", ".jsp.bak"], "severity": "HIGH", "description": "Source code backup (readable as plain text)" },
+    { "id": "database-archive-suffix", "type": "suffix", "patterns": [".sql.gz", ".sql.zip", ".sql.bak", ".sql.tar.gz"], "severity": "HIGH", "description": "Compressed database dump" },
+    { "id": "editor-swap-suffix", "type": "suffix", "patterns": [".swp", ".swo", "~"], "severity": "MEDIUM", "description": "Editor temporary file" },
+
+    { "id": "vcs-dir", "type": "dir", "patterns": [".git", ".svn", ".hg", ".bzr"], "severity": "HIGH", "description": "Version control directory exposure" },
+    { "id": "cloud-dir", "type": "dir", "patterns": [".aws", ".azure", ".gcloud", ".ssh", ".kube"], "severity": "CRITICAL", "description": "Cloud / credentials directory" },
+    { "id": "backup-dir", "type": "dir", "patterns": ["backup", "backups", "dump", "dumps", "old", "archive"], "severity": "MEDIUM", "description": "Backup directory" },
+    { "id": "temp-dir", "type": "dir", "patterns": ["temp", "tmp", "logs", "debug"], "severity": "LOW", "description": "Temporary / log directory" },
+    { "id": "ide-dir", "type": "dir", "patterns": [".idea", ".vscode"], "severity": "LOW", "description": "IDE configuration directory" },
+
+    { "id": "secret-ssh-private-key", "type": "content", "patterns": ["-----BEGIN (RSA |OPENSSH |EC |DSA |PGP )?PRIVATE KEY-----"], "severity": "CRITICAL", "description": "Embedded private key" },
+    { "id": "secret-aws-key", "type": "content", "patterns": ["AKIA[0-9A-Z]{16}", "aws_secret_access_key\\s*[:=]\\s*['\"]?[A-Za-z0-9/+]{40}"], "severity": "CRITICAL", "description": "AWS access key" },
+    { "id": "secret-google-api", "type": "content", "patterns": ["AIza[0-9A-Za-z_\\-]{35}"], "severity": "CRITICAL", "description": "Google API key" },
+    { "id": "secret-openai", "type": "content", "patterns": ["sk-[A-Za-z0-9]{20,}"], "severity": "CRITICAL", "description": "OpenAI-style API key" },
+    { "id": "secret-slack", "type": "content", "patterns": ["xox[baprs]-[0-9A-Za-z-]{10,}"], "severity": "CRITICAL", "description": "Slack token" },
+    { "id": "secret-jwt", "type": "content", "patterns": ["eyJ[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}"], "severity": "HIGH", "description": "JWT token" },
+    { "id": "secret-connection-string", "type": "content", "patterns": ["(mysql|postgres|postgresql|mongodb(\\+srv)?|redis)://[^\\s'\"]+:[^\\s'\"]+@"], "severity": "CRITICAL", "description": "Connection string with embedded credentials" },
+    { "id": "secret-generic-api-key", "type": "content", "patterns": ["(api[_-]?key|apikey|access[_-]?token|client[_-]?secret)\\s*[:=]\\s*['\"]?[A-Za-z0-9_\\-]{16,}"], "severity": "HIGH", "description": "Generic API key / secret assignment" },
+    { "id": "secret-hardcoded-password", "type": "content", "patterns": ["(db_)?password\\s*[:=]\\s*['\"][^'\"]{6,}['\"]"], "severity": "HIGH", "description": "Hardcoded password" }
+  ]
+}
